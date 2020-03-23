@@ -1,0 +1,16 @@
+create database hospital;
+
+create table if not exists first_names(
+id uuid primary key,
+created_date_time TIMESTAMP not null,
+last_modified_date_time TIMESTAMP not null,
+first_name varchar (32) UNIQUE,
+male_name boolean
+);
+
+create table if not exists last_names(
+  id uuid primary key,
+  created_date_time TIMESTAMP not null,
+  last_modified_date_time TIMESTAMP not null,
+  last_name varchar (32) UNIQUE
+  );
