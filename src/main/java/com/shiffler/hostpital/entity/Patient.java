@@ -1,6 +1,5 @@
 package com.shiffler.hostpital.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -47,7 +46,7 @@ public class Patient {
             message = "Lastname can only have between 2 and 32 letters, spaces are allowed")
     private String lastName;
 
-    @Size(min= 1, max = 1)
+    @Pattern(regexp="^[a-zA-Z ]$")
     private String middleInitial;
 
     @Past

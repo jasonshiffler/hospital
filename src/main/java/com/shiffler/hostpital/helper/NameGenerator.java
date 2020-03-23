@@ -2,7 +2,8 @@ package com.shiffler.hostpital.helper;
 
 public interface NameGenerator {
 
-    String generateFirstName();
+    String generateMaleFirstName();
+    String generateFemaleFirstName();
     String generateLastName();
     String generateMiddleInitial();
 

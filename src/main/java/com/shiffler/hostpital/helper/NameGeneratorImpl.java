@@ -1,7 +1,5 @@
 package com.shiffler.hostpital.helper;
 
-import com.shiffler.hostpital.entity.FirstName;
-import com.shiffler.hostpital.entity.LastName;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +14,9 @@ import java.util.Random;
 @Component
 public class NameGeneratorImpl implements NameGenerator {
 
-   private List<FirstName> firstNameList = new ArrayList<>();
-   private List<LastName> lastNameList = new ArrayList<>();
+   private List<String> maleFirstNameList = new ArrayList<>();
+    private List<String> femaleFirstNameList = new ArrayList<>();
+   private List<String> lastNameList = new ArrayList<>();
 
     //These Strings specify the source of the names.
 
@@ -32,14 +31,18 @@ public class NameGeneratorImpl implements NameGenerator {
 
 
     @Override
-    public String generateFirstName() {
-        return firstNameList.get(new Random().nextInt(firstNameList.size())).getFirstName();
+    public String generateMaleFirstName() {
+        return maleFirstNameList.get(new Random().nextInt(maleFirstNameList.size()));
+    }
+
+    @Override
+    public String generateFemaleFirstName() {
+        return femaleFirstNameList.get(new Random().nextInt(femaleFirstNameList.size()));
     }
 
     @Override
     public String generateLastName() {
-        return lastNameList.get(new Random().nextInt(lastNameList.size())).getLastName();
-
+        return lastNameList.get(new Random().nextInt(lastNameList.size()));
     }
 
     @Override
@@ -52,18 +55,15 @@ public class NameGeneratorImpl implements NameGenerator {
     public void init() throws IOException {
 
         createNameList(maleFirstNameSource)
-                .stream()
-                .map(s -> FirstName.builder().firstName(s).isMaleName(true).build())
-                .forEach(s -> firstNameList.add(s));
+                .stream().parallel()
+                .forEach(s -> maleFirstNameList.add(s));
 
         createNameList(femaleFirstNameSource)
-                .stream()
-                .map(s -> FirstName.builder().firstName(s).isMaleName(false).build())
-                .forEach(s -> firstNameList.add(s));
+                .stream().parallel()
+                .forEach(s -> femaleFirstNameList.add(s));
 
         createNameList(lastNameSource)
-                .stream()
-                .map(s -> LastName.builder().lastName(s).build())
+                .stream().parallel()
                 .forEach(s -> lastNameList.add(s));
     }
 
