@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -31,19 +32,19 @@ public class Patient {
     private UUID id;
 
     @CreationTimestamp
-    @Column(name="created_date_time")//, //updatable = false)
-    //@Null
+    @Column(name="created_date_time", updatable = false)
     private OffsetDateTime createdDateTime;
 
     @UpdateTimestamp
-    //@Null
     @Column(name="last_modified_date_time")
     private OffsetDateTime lastModifiedDateTime;
 
-    @Size(min = 1, max = 32)
+    @Pattern(regexp="^[a-zA-Z ]{2,32}$",
+            message = "Firstname can only have between 2 and 32 letters, spaces are allowed")
     private String firstName;
 
-    @Size(min = 1, max = 32)
+    @Pattern(regexp="^[a-zA-Z ]{2,32}$",
+            message = "Lastname can only have between 2 and 32 letters, spaces are allowed")
     private String lastName;
 
     @Size(min= 1, max = 1)

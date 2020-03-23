@@ -6,8 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NameGeneratorImplTest {
 
-
-
+    @Test
+    void generateFirstName() {
+    }
 
     @Test
     void generateLastName() {
