@@ -50,7 +50,7 @@ public class Patient {
     private String middleInitial;
 
     @Past
-    private LocalDate birthday;
+    private LocalDate dateOfBirth;
 
 
 }

@@ -15,8 +15,9 @@ import java.util.Random;
 public class NameGeneratorImpl implements NameGenerator {
 
    private List<String> maleFirstNameList = new ArrayList<>();
-    private List<String> femaleFirstNameList = new ArrayList<>();
+   private List<String> femaleFirstNameList = new ArrayList<>();
    private List<String> lastNameList = new ArrayList<>();
+   private List<String> middleInitialList = new ArrayList<>();
 
     //These Strings specify the source of the names.
 
@@ -28,6 +29,9 @@ public class NameGeneratorImpl implements NameGenerator {
 
     @Value("${lastname.srcfile}")
     String lastNameSource;
+
+    @Value("${middleinitial.srcfile}")
+    String middleInitialSource;
 
 
     @Override
@@ -47,12 +51,16 @@ public class NameGeneratorImpl implements NameGenerator {
 
     @Override
     public String generateMiddleInitial() {
-        return null;
+        return middleInitialList.get(new Random().nextInt(middleInitialList.size()));
     }
 
-
+    /**
+     * Populate the name lists so they can be used by the name generator methods.
+     * @throws IOException
+     */
     @PostConstruct
     public void init() throws IOException {
+
 
         createNameList(maleFirstNameSource)
                 .stream().parallel()
@@ -65,6 +73,10 @@ public class NameGeneratorImpl implements NameGenerator {
         createNameList(lastNameSource)
                 .stream().parallel()
                 .forEach(s -> lastNameList.add(s));
+
+        createNameList(middleInitialSource)
+                .stream().parallel()
+                .forEach(s -> middleInitialList.add(s));
     }
 
     /**
@@ -89,5 +101,7 @@ public class NameGeneratorImpl implements NameGenerator {
         }
         return nameList;
     }
+
+
 
 }
