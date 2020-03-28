@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Random;
 
 @Component
-public class BirthdayGeneratorImpl implements BirthdayGenerator {
+public class RandomDateGeneratorImpl implements RandomDateGenerator {
 
     /**
      * Returns a random date of birth between the specified years
@@ -17,15 +17,12 @@ public class BirthdayGeneratorImpl implements BirthdayGenerator {
      * https://stackoverflow.com/questions/3985392/generate-random-date-of-birth
      */
 
-    public LocalDate generateDateOfBirth(Integer earliestYear, Integer latestYear){
+    public LocalDate generateDateBetween(Integer earliestYear, Integer latestYear){
         Random random = new Random();
         int minDay = (int) LocalDate.of(earliestYear, 1, 1).toEpochDay();
         int maxDay = (int) LocalDate.of(latestYear, 1, 1).toEpochDay();
         long randomDay = minDay + random.nextInt(maxDay - minDay);
         return LocalDate.ofEpochDay(randomDay);
     }
-
-
-
 
 }

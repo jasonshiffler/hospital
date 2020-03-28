@@ -7,15 +7,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -46,11 +45,15 @@ public class Patient {
             message = "Lastname can only have between 2 and 32 letters, spaces are allowed")
     private String lastName;
 
-    @Pattern(regexp="^[a-zA-Z ]$")
+    @Pattern(regexp="^[a-zA-Z ]$", message = " The middle Initial must be a letter")
     private String middleInitial;
 
     @Past
     private LocalDate dateOfBirth;
+
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "medical_test_id")
+    private List<MedicalTest> medicalTests = new ArrayList<>();
 
 
 }

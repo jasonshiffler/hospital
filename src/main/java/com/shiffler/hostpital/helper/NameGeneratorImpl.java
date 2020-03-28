@@ -1,5 +1,10 @@
+/*
+This class is used to generate random names based on lists of names contained in various source files
+ */
+
 package com.shiffler.hostpital.helper;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 @Component
+@Slf4j
 public class NameGeneratorImpl implements NameGenerator {
 
    private List<String> maleFirstNameList = new ArrayList<>();
@@ -19,7 +25,7 @@ public class NameGeneratorImpl implements NameGenerator {
    private List<String> lastNameList = new ArrayList<>();
    private List<String> middleInitialList = new ArrayList<>();
 
-    //These Strings specify the source of the names.
+    //These Strings specify the names of the source files which are pulled from application.properties.
 
     @Value("${male.firstname.srcfile}")
     String maleFirstNameSource;
@@ -39,17 +45,32 @@ public class NameGeneratorImpl implements NameGenerator {
         return maleFirstNameList.get(new Random().nextInt(maleFirstNameList.size()));
     }
 
+    /**
+     * Generates a random female first name based on a source file
+     * @return A String containing a female first name
+     */
+
     @Override
     public String generateFemaleFirstName() {
         return femaleFirstNameList.get(new Random().nextInt(femaleFirstNameList.size()));
     }
+
+    /**
+     *  Generates a random last name based on a source file
+     * @return
+     */
 
     @Override
     public String generateLastName() {
         return lastNameList.get(new Random().nextInt(lastNameList.size()));
     }
 
-    @Override
+    /**
+     * Generates random middle initials based on a source file
+     * @return A String that represents a middle initial
+     */
+
+     @Override
     public String generateMiddleInitial() {
         return middleInitialList.get(new Random().nextInt(middleInitialList.size()));
     }
@@ -61,6 +82,7 @@ public class NameGeneratorImpl implements NameGenerator {
     @PostConstruct
     public void init() throws IOException {
 
+        log.info("Initializing names");
 
         createNameList(maleFirstNameSource)
                 .stream().parallel()
@@ -101,7 +123,5 @@ public class NameGeneratorImpl implements NameGenerator {
         }
         return nameList;
     }
-
-
 
 }
