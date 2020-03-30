@@ -1,4 +1,4 @@
-package com.shiffler.hostpital;
+package com.shiffler.hospital;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

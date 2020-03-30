@@ -1,4 +1,4 @@
-package com.shiffler.hostpital.helper;
+package com.shiffler.hospital.helper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

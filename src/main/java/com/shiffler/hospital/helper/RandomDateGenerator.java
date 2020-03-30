@@ -1,4 +1,4 @@
-package com.shiffler.hostpital.helper;
+package com.shiffler.hospital.helper;
 
 import java.time.LocalDate;
 

@@ -2,9 +2,9 @@
 This class is used to generate random patients so that there is test data available in the repository
  */
 
-package com.shiffler.hostpital.helper;
+package com.shiffler.hospital.helper;
 
-import com.shiffler.hostpital.entity.Patient;
+import com.shiffler.hospital.entity.Patient;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

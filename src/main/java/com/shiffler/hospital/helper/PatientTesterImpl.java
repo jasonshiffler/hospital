@@ -2,11 +2,13 @@
 This class manages tests for Patients
  */
 
-package com.shiffler.hostpital.helper;
+package com.shiffler.hospital.helper;
 
-import com.shiffler.hostpital.entity.MedicalTest;
-import com.shiffler.hostpital.entity.Patient;
+import com.shiffler.hospital.entity.MedicalTest;
+import com.shiffler.hospital.entity.Patient;
+import com.shiffler.hospital.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -31,24 +33,24 @@ public class PatientTesterImpl implements PatientTester {
 
     private List<MedicalTest> medicalTestList = new ArrayList<>();
 
+    PatientService patientService;
+
+    @Autowired
+    public PatientTesterImpl(PatientService patientService) {
+        this.patientService = patientService;
+    }
+
     /**
-     * Takes a List of patients and randomly determines for each one if they need a medical test.
+     * Takes a  patients and randomly determines for each one if they need a medical test.
      *
      * @param patientList - A List of patients
      */
     @Override
-    public void assignTests(List<Patient> patientList) {
+    public void assignTests(Patient patient) {
 
-        patientList.stream()
-                .forEach((s) ->
-                        {
-                            if (Math.random() < this.testProbability) {
-                                List<MedicalTest> tests = s.getMedicalTests();
-                                tests.add(new MedicalTest());
-
-                            }
-                        }
-                );
+          if (Math.random() < this.testProbability) {
+             patientService.addMedicalTest(patient, generateRandomMedicalTest());
+          }
 
     } //close method
 

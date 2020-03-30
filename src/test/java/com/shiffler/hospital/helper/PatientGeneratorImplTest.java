@@ -1,8 +1,6 @@
-package com.shiffler.hostpital.helper;
+package com.shiffler.hospital.helper;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PatientGeneratorImplTest {
 

@@ -1,4 +1,4 @@
-package com.shiffler.hostpital.entity;
+package com.shiffler.hospital.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -42,8 +42,15 @@ public class MedicalTest {
     @Column(name="test_code")
     private String testCode;
 
+    //Did the test come back positive. A null value means the result hasn't
+    //been received
     @Column(name="is_positive")
     private Boolean isPositive;
+
+    //Has the test order been placed with the testing facility.
+    @Column(name="is_ordered")
+    private Boolean isOrdered;
+
 
     @Column(name="reference_number")
     private long referenceNumber;

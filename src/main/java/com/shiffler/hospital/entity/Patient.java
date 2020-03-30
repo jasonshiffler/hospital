@@ -1,4 +1,4 @@
-package com.shiffler.hostpital.entity;
+package com.shiffler.hospital.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,6 +54,5 @@ public class Patient {
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "medical_test_id")
     private List<MedicalTest> medicalTests = new ArrayList<>();
-
 
 }

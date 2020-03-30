@@ -1,6 +1,6 @@
-package com.shiffler.hostpital.repository;
+package com.shiffler.hospital.repository;
 
-import com.shiffler.hostpital.entity.Patient;
+import com.shiffler.hospital.entity.Patient;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
