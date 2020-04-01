@@ -1,4 +1,4 @@
-package com.shiffler.hospital.helper;
+package com.shiffler.hospital.service;
 
 import com.shiffler.hospital.entity.Patient;
 

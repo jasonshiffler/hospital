@@ -1,4 +1,4 @@
-package com.shiffler.hospital.helper;
+package com.shiffler.hospital.service;
 
 public interface NameGenerator {
 

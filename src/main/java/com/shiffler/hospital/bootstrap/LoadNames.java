@@ -1,13 +1,16 @@
 package com.shiffler.hospital.bootstrap;
 
+import com.shiffler.hospital.dto.MedicalTestDto;
+import com.shiffler.hospital.entity.MedicalTest;
 import com.shiffler.hospital.entity.Patient;
-import com.shiffler.hospital.helper.PatientGenerator;
-import com.shiffler.hospital.helper.PatientTester;
-import com.shiffler.hospital.service.PatientService;
+import com.shiffler.hospital.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.net.URI;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -16,12 +19,18 @@ public class LoadNames implements CommandLineRunner {
        PatientGenerator patientGenerator;
        PatientService patientService;
        PatientTester patientTester;
+       OrderMedicalTestService orderMedicalTestService;
 
        @Autowired
-       public LoadNames(PatientGenerator patientGenerator, PatientService patientService, PatientTester patientTester){
+       public LoadNames(PatientGenerator patientGenerator,
+                        PatientService patientService,
+                        PatientTester patientTester,
+                        OrderMedicalTestService orderMedicalTestService){
+
            this.patientGenerator = patientGenerator;
            this.patientService = patientService;
            this.patientTester = patientTester;
+           this.orderMedicalTestService = orderMedicalTestService;
        }
 
     @Override
@@ -38,16 +47,20 @@ public class LoadNames implements CommandLineRunner {
                patientService.savePatient(patient);
 
                log.info("***** Assigning Tests to patients *****");
-
                assignTests();
+
+               log.info("***** Ordering Medical Tests *****");
+               orderMedicalTest();
                Thread.sleep(10000);
+
+
 
            }
    }
 
 
     /**
-     * Look through the whole list of patients and randomly assign medical tests
+     * Look through all of the patients in the repository and randomly assign medical tests
      *
      */
    private void assignTests(){
@@ -55,7 +68,19 @@ public class LoadNames implements CommandLineRunner {
            for (Patient patient: patients){
                patientTester.assignTests(patient);
            }
-
    }
+    void orderMedicalTest() {
+
+        MedicalTest medicalTest = new MedicalTest();
+        medicalTest.setTestCode("00000A0001");
+        medicalTest.setId(UUID.fromString("ec0dcae2-a11d-4987-bbf1-025091dd50e8"));
+
+        MedicalTestDto medicalTestDto = MedicalTestDtoConverter.MedicalTestToMedicalTestDto(medicalTest);
+
+        orderMedicalTestService.orderMedicalTest(medicalTest);
+        log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+
+    }
 
 }

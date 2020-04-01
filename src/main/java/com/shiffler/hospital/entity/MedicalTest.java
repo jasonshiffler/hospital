@@ -52,8 +52,8 @@ public class MedicalTest {
     private Boolean isOrdered;
 
 
-    @Column(name="reference_number")
-    private long referenceNumber;
+    @Column(name="test_status" )
+    private MedicalTestStatusEnum testStatus;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
