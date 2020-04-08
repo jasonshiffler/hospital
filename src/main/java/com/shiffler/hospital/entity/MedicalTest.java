@@ -42,17 +42,22 @@ public class MedicalTest {
     @Column(name="test_code")
     private String testCode;
 
-    //Did the test come back positive. A null value means the result hasn't
-    //been received
-    @Column(name="is_positive")
-    private Boolean isPositive;
+    //Did the test come back positive.
+    @Column(name="medical_test_result")
+    @Enumerated(EnumType.STRING)
+    private MedicalTestResultEnum medicalTestResultEnum;
 
     //Has the test order been placed with the testing facility.
     @Column(name="is_ordered")
     private Boolean isOrdered;
 
+    //Corresponds to the Medical Test Order id from the testing facility
+    @Column(name="order_number")
+    private Long orderNumber;
+
 
     @Column(name="test_status" )
+    @Enumerated(EnumType.STRING)
     private MedicalTestStatusEnum testStatus;
 
     @ManyToOne

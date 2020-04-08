@@ -5,6 +5,7 @@ This class manages tests for Patients
 package com.shiffler.hospital.service;
 
 import com.shiffler.hospital.entity.MedicalTest;
+import com.shiffler.hospital.entity.MedicalTestResultEnum;
 import com.shiffler.hospital.entity.Patient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class PatientTesterImpl implements PatientTester {
 
     private List<MedicalTest> medicalTestList = new ArrayList<>();
 
-    PatientService patientService;
+    private final PatientService patientService;
 
     @Autowired
     public PatientTesterImpl(PatientService patientService) {
@@ -106,7 +107,8 @@ public class PatientTesterImpl implements PatientTester {
             testName = values[1];
 
             this.medicalTestList.add(
-                    MedicalTest.builder().testCode(testCode).testName(testName).isPositive(null).build()
+                    MedicalTest.builder().testCode(testCode).testName(testName)
+                            .medicalTestResultEnum(MedicalTestResultEnum.WAITING_FOR_RESULT).build()
             );
 
         }

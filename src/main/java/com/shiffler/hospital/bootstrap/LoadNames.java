@@ -3,23 +3,24 @@ package com.shiffler.hospital.bootstrap;
 import com.shiffler.hospital.dto.MedicalTestDto;
 import com.shiffler.hospital.entity.MedicalTest;
 import com.shiffler.hospital.entity.Patient;
+import com.shiffler.hospital.mappers.MedicalTestMapper;
 import com.shiffler.hospital.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
 import java.util.UUID;
 
 @Component
 @Slf4j
 public class LoadNames implements CommandLineRunner {
 
-       PatientGenerator patientGenerator;
-       PatientService patientService;
-       PatientTester patientTester;
-       OrderMedicalTestService orderMedicalTestService;
+    private final PatientGenerator patientGenerator;
+    private final PatientService patientService;
+    private final PatientTester patientTester;
+    private final OrderMedicalTestService orderMedicalTestService;
+
 
        @Autowired
        public LoadNames(PatientGenerator patientGenerator,
@@ -74,12 +75,7 @@ public class LoadNames implements CommandLineRunner {
         MedicalTest medicalTest = new MedicalTest();
         medicalTest.setTestCode("00000A0001");
         medicalTest.setId(UUID.fromString("ec0dcae2-a11d-4987-bbf1-025091dd50e8"));
-
-        MedicalTestDto medicalTestDto = MedicalTestDtoConverter.MedicalTestToMedicalTestDto(medicalTest);
-
         orderMedicalTestService.orderMedicalTest(medicalTest);
-        log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-
 
     }
 

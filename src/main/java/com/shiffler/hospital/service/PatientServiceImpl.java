@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 public class PatientServiceImpl implements PatientService {
 
-    PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
     @Autowired
     public PatientServiceImpl(PatientRepository patientRepository) {
