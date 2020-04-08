@@ -3,8 +3,8 @@ package com.shiffler.hospital.service;
 import com.shiffler.hospital.dto.MedicalTestDto;
 import com.shiffler.hospital.entity.MedicalTest;
 import com.shiffler.hospital.entity.MedicalTestResultEnum;
-import com.shiffler.hospital.entity.Patient;
 import com.shiffler.hospital.mappers.MedicalTestMapper;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,20 +23,18 @@ import java.util.Random;
 
 @Service
 @Slf4j
+@Data
 public class MedicalTestServiceImpl implements MedicalTestService {
 
     //The hostname of the Medical Testing Center
     @Value("${api.host}")
     private String apiHost;
 
-
     @Value("${medtests.srcfile}")
-    String testSource; //The path to the file that holds the possible tests
-
+    private String testSource; //The path to the file that holds the possible tests
 
     private List<MedicalTest> medicalTestList = new ArrayList<>();
 
-    private final PatientService patientService;
 
     private final String MEDICAL_TEST_PATH ="/api/v1/medicaltestorder";
     private final RestTemplate restTemplate;
@@ -44,12 +42,9 @@ public class MedicalTestServiceImpl implements MedicalTestService {
 
 
     @Autowired
-    public MedicalTestServiceImpl(String apiHost,
-                                  PatientService patientService,
-                                  RestTemplateBuilder restTemplateBuilder,
+    public MedicalTestServiceImpl(RestTemplateBuilder restTemplateBuilder,
                                   MedicalTestMapper medicalTestMapper) {
-        this.apiHost = apiHost;
-        this.patientService = patientService;
+
         this.restTemplate = restTemplateBuilder.build();
         this.medicalTestMapper = medicalTestMapper;
     }
