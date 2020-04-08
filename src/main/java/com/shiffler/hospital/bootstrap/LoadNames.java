@@ -43,7 +43,9 @@ public class LoadNames implements CommandLineRunner {
                assignTests();
 
                log.info("***** Ordering Medical Tests *****");
-               orderMedicalTest();
+               medicalTestService.orderUnSubmittedTests();
+               //orderMedicalTest();
+               medicalTestService.updateStatusForPendingTests();
                Thread.sleep(10000);
 
 
@@ -67,6 +69,7 @@ public class LoadNames implements CommandLineRunner {
         MedicalTest medicalTest = new MedicalTest();
         medicalTest.setTestCode("00000A0001");
         medicalTest.setId(UUID.fromString("ec0dcae2-a11d-4987-bbf1-025091dd50e8"));
+
         medicalTestService.orderMedicalTest(medicalTest);
 
     }

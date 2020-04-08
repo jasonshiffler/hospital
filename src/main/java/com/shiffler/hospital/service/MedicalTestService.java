@@ -7,5 +7,7 @@ public interface MedicalTestService {
 
     void orderMedicalTest(MedicalTest medicalTest);
     MedicalTest generateRandomMedicalTest();
+    void orderUnSubmittedTests();
+    void updateStatusForPendingTests();
 
 }

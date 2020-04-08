@@ -1,7 +1,8 @@
 package com.shiffler.hospital.dto;
 
+import com.shiffler.hospital.entity.MedicalTestOrderStatusEnum;
 import com.shiffler.hospital.entity.MedicalTestResultEnum;
-import com.shiffler.hospital.entity.MedicalTestStatusEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,6 @@ public class MedicalTestDto {
 
     private Long orderNumber;
     private String testCode;
-    private MedicalTestStatusEnum testStatus;
+    private MedicalTestOrderStatusEnum testStatus;
     private MedicalTestResultEnum medicalTestResultEnum;
 }

@@ -88,7 +88,8 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void assignRandomTestToPatient(Patient patient) {
 
-        log.info("Random determination if Patient will be assigned a test {} ");
+        log.info("Random determination if Patient will be assigned a test {} " ,
+                patient.getFirstName() + " " + patient.getLastName());
         if (Math.random() < this.testProbability) {
             addMedicalTestToPatient(patient, medicalTestService.generateRandomMedicalTest());
         }

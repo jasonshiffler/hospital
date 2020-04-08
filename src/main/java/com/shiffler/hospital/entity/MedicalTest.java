@@ -47,10 +47,6 @@ public class MedicalTest {
     @Enumerated(EnumType.STRING)
     private MedicalTestResultEnum medicalTestResultEnum;
 
-    //Has the test order been placed with the testing facility.
-    @Column(name="is_ordered")
-    private Boolean isOrdered;
-
     //Corresponds to the Medical Test Order id from the testing facility
     @Column(name="order_number")
     private Long orderNumber;
@@ -58,7 +54,7 @@ public class MedicalTest {
 
     @Column(name="test_status" )
     @Enumerated(EnumType.STRING)
-    private MedicalTestStatusEnum testStatus;
+    private MedicalTestOrderStatusEnum testStatus;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
