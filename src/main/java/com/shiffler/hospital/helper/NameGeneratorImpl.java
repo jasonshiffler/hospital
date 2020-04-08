@@ -2,8 +2,9 @@
 This class is used to generate random names based on lists of names contained in various source files
  */
 
-package com.shiffler.hospital.service;
+package com.shiffler.hospital.helper;
 
+import com.shiffler.hospital.helper.NameGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

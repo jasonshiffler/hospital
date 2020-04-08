@@ -1,7 +1,5 @@
 package com.shiffler.hospital.helper;
 
-import com.shiffler.hospital.service.RandomDateGenerator;
-import com.shiffler.hospital.service.RandomDateGeneratorImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,22 +2,46 @@ package com.shiffler.hospital.service;
 
 import com.shiffler.hospital.entity.MedicalTest;
 import com.shiffler.hospital.entity.Patient;
+import com.shiffler.hospital.helper.NameGenerator;
+import com.shiffler.hospital.helper.RandomDateGenerator;
 import com.shiffler.hospital.repository.PatientRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Slf4j
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final MedicalTestService medicalTestService;
+
+    private final NameGenerator nameGenerator;
+    private final RandomDateGenerator randomDateGenerator;
+
+    @Value("${earliest.birthyear}")
+    private int earliestYear;
+
+    @Value("${latest.birthyear}")
+    private int latestYear;
+
+    @Value("${test.probability}")
+    float testProbability; // the probability that a patient will need a test. should be between 0 and 1
 
     @Autowired
-    public PatientServiceImpl(PatientRepository patientRepository) {
+    public PatientServiceImpl(PatientRepository patientRepository,
+                              MedicalTestService medicalTestService,
+                              NameGenerator nameGenerator,
+                              RandomDateGenerator randomDateGenerator) {
+
         this.patientRepository = patientRepository;
+        this.medicalTestService = medicalTestService;
+        this.nameGenerator = nameGenerator;
+        this.randomDateGenerator = randomDateGenerator;
     }
 
     /**
@@ -28,7 +52,6 @@ public class PatientServiceImpl implements PatientService {
     public void savePatient(Patient patient) {
 
         log.info("Saving patient {}", patient.toString());
-
         patientRepository.save(patient);
 
     }
@@ -39,7 +62,7 @@ public class PatientServiceImpl implements PatientService {
      * @param medicalTest - the medical test that will be added.
      */
     @Override
-    public void addMedicalTest(Patient patient, MedicalTest medicalTest) {
+    public void addMedicalTestToPatient(Patient patient, MedicalTest medicalTest) {
 
         log.info("Adding Medical Test {} to patient {}", medicalTest.toString(), patient.toString());
         List<MedicalTest> test = patient.getMedicalTests();
@@ -56,4 +79,43 @@ public class PatientServiceImpl implements PatientService {
     public Iterable<Patient> getAllPatients() {
         return patientRepository.findAll();
     }
+
+    /**
+     * Takes a  patients and randomly determines for each one if they need a medical test.
+     *
+     * @param patient - The patient that will be checked to see if a medical test is necessary
+     */
+    @Override
+    public void assignRandomTestToPatient(Patient patient) {
+
+        log.info("Random determination if Patient will be assigned a test {} ");
+        if (Math.random() < this.testProbability) {
+            addMedicalTestToPatient(patient, medicalTestService.generateRandomMedicalTest());
+        }
+
+    } //close method
+
+    /**
+     * Builds a Patient with a random name and a random birthday
+     * @return
+     */
+    @Override
+    public Patient generateRandomPatient() {
+
+        if (new Random().nextBoolean()) {
+
+            return Patient.builder().firstName(nameGenerator.generateFemaleFirstName())
+                    .middleInitial(nameGenerator.generateMiddleInitial())
+                    .lastName(nameGenerator.generateLastName())
+                    .dateOfBirth(randomDateGenerator.generateDateBetween(earliestYear,latestYear))
+                    .build();
+        } else {
+            return Patient.builder().firstName(nameGenerator.generateMaleFirstName())
+                    .middleInitial(nameGenerator.generateMiddleInitial())
+                    .lastName(nameGenerator.generateLastName())
+                    .dateOfBirth(randomDateGenerator.generateDateBetween(earliestYear,latestYear))
+                    .build();
+        }
+    } //close method
+
 }

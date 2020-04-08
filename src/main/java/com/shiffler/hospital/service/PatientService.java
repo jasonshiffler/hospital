@@ -8,11 +8,18 @@ import java.util.List;
 public interface PatientService {
 
     //Add a new Medical Patient
-    public void savePatient(Patient patient);
+    void savePatient(Patient patient);
 
     //Add a Medical Test to an existing Patient
-    public void addMedicalTest(Patient patient, MedicalTest medicalTest);
+    void addMedicalTestToPatient(Patient patient, MedicalTest medicalTest);
 
     //Return a list of all of the patients
-    public Iterable<Patient> getAllPatients();
+    Iterable<Patient> getAllPatients();
+
+    //Assign a Random MedicalTest to a Patient
+    void assignRandomTestToPatient(Patient patient);
+
+    //Generates a Random Patient
+    Patient generateRandomPatient();
+
 }

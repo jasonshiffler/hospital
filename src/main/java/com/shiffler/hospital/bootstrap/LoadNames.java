@@ -1,9 +1,7 @@
 package com.shiffler.hospital.bootstrap;
 
-import com.shiffler.hospital.dto.MedicalTestDto;
 import com.shiffler.hospital.entity.MedicalTest;
 import com.shiffler.hospital.entity.Patient;
-import com.shiffler.hospital.mappers.MedicalTestMapper;
 import com.shiffler.hospital.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +14,16 @@ import java.util.UUID;
 @Slf4j
 public class LoadNames implements CommandLineRunner {
 
-    private final PatientGenerator patientGenerator;
-    private final PatientService patientService;
-    private final PatientTester patientTester;
-    private final OrderMedicalTestService orderMedicalTestService;
 
+    private final PatientService patientService;
+    private final MedicalTestService medicalTestService;
 
        @Autowired
-       public LoadNames(PatientGenerator patientGenerator,
-                        PatientService patientService,
-                        PatientTester patientTester,
-                        OrderMedicalTestService orderMedicalTestService){
+       public LoadNames(PatientService patientService,
+                        MedicalTestService medicalTestService){
 
-           this.patientGenerator = patientGenerator;
            this.patientService = patientService;
-           this.patientTester = patientTester;
-           this.orderMedicalTestService = orderMedicalTestService;
+           this.medicalTestService = medicalTestService;
        }
 
     @Override
@@ -42,7 +34,7 @@ public class LoadNames implements CommandLineRunner {
         log.info("**************** Starting Hospital Application ***************");
 
            while(true) {
-               patient = patientGenerator.randomPatientGenerator();
+               patient =patientService.generateRandomPatient();
                log.info("****** Generating new patient ******");
                log.info(patient.toString());
                patientService.savePatient(patient);
@@ -67,7 +59,7 @@ public class LoadNames implements CommandLineRunner {
    private void assignTests(){
        Iterable<Patient> patients = patientService.getAllPatients();
            for (Patient patient: patients){
-               patientTester.assignTests(patient);
+               patientService.assignRandomTestToPatient(patient);
            }
    }
     void orderMedicalTest() {
@@ -75,7 +67,7 @@ public class LoadNames implements CommandLineRunner {
         MedicalTest medicalTest = new MedicalTest();
         medicalTest.setTestCode("00000A0001");
         medicalTest.setId(UUID.fromString("ec0dcae2-a11d-4987-bbf1-025091dd50e8"));
-        orderMedicalTestService.orderMedicalTest(medicalTest);
+        medicalTestService.orderMedicalTest(medicalTest);
 
     }
 

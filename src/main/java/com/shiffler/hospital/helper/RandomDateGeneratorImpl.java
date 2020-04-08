@@ -1,5 +1,6 @@
-package com.shiffler.hospital.service;
+package com.shiffler.hospital.helper;
 
+import com.shiffler.hospital.helper.RandomDateGenerator;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
