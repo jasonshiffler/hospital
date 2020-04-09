@@ -2,9 +2,9 @@ This Spring Boot Maven project models a hospital. It randomly generates new pati
 
 Techologies used:
 
--Spring Boot
--Spring MVC
--Spring Data JPA
--Mapstruct
--Postgresql
--Lombok
+-Spring Boot<br />
+-Spring MVC<br />
+-Spring Data JPA<br />
+-Mapstruct<br />
+-Postgresql<br />
+-Lombok<br />
