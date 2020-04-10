@@ -54,7 +54,7 @@ public class MedicalTest {
 
     @Column(name="test_status" )
     @Enumerated(EnumType.STRING)
-    private MedicalTestOrderStatusEnum testStatus;
+    private MedicalTestOrderStatusEnum testOrderStatusEnum;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")

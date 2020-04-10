@@ -1,5 +1,6 @@
 package com.shiffler.hospital.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shiffler.hospital.entity.MedicalTestOrderStatusEnum;
 import com.shiffler.hospital.entity.MedicalTestResultEnum;
 
@@ -17,8 +18,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class MedicalTestDto {
 
+    //The Medical Test Center refers to this as the id so we use Jackson to map the field name
+    @JsonProperty("id")
     private Long orderNumber;
+
     private String testCode;
-    private MedicalTestOrderStatusEnum testStatus;
+
+    //Allow for Object <--> JSON Serialization/Deserialization since the REST API uses a different name for this value
+    @JsonProperty("testOrderStatus")
+    private MedicalTestOrderStatusEnum testOrderStatusEnum;
+
+    @JsonProperty("medicalTestResult")
     private MedicalTestResultEnum medicalTestResultEnum;
 }

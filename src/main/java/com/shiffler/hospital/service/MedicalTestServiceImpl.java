@@ -78,36 +78,40 @@ public class MedicalTestServiceImpl implements MedicalTestService {
      * status and get an update on their status
      */
     public void updateStatusForPendingTests(){
-        log.info("Updating Test Status");
+        log.info("Updating Test Status for Pending Tests");
 
         List <MedicalTest> medicalTestList = medicalTestRepository
                 .findByMedicalTestOrderStatus(MedicalTestOrderStatusEnum.ORDER_PLACED);
 
-        medicalTestList.stream().parallel().forEach(s -> getTestStatusFromTestCenter(s));
+        medicalTestList.stream().parallel().forEach(s -> getMedicalTestStatusFromTestCenter(s));
     }
 
-    public void getTestStatusFromTestCenter(MedicalTest medicalTest) {
+    /**
+     * Get the status of a particular Medical Test from the testing center.
+     * @param medicalTest
+     */
+    public void getMedicalTestStatusFromTestCenter(MedicalTest medicalTest) {
+
+        log.info("Retrieving test status for test: {}", medicalTest);
 
         MedicalTestDto medicalTestDto = new MedicalTestDto();
 
+        //Retreive the DTO object from the test center
         try {
 
-
-
-            String thing = restTemplate.getForObject(this.apiHost
-                                    + MEDICAL_TEST_PATH
-                                    + "/"
-                                    + medicalTest.getOrderNumber()
-                            , String.class);
-
-          /*  medicalTestDto = restTemplate
+            medicalTestDto = restTemplate
                     .getForObject(this.apiHost
                             + MEDICAL_TEST_PATH
                             + "/"
                             + medicalTest.getOrderNumber()
-                            , MedicalTestDto.class);*/
+                            , MedicalTestDto.class);
 
-            log.info(thing.toString());
+            if (medicalTest.getTestOrderStatusEnum() != medicalTestDto.getTestOrderStatusEnum()
+                    && (medicalTestDto.getTestOrderStatusEnum() != null)) {
+                medicalTest.setTestOrderStatusEnum(medicalTestDto.getTestOrderStatusEnum());
+            }
+
+            log.info(medicalTestDto.toString());
 
         }catch (Exception e){
             log.error("Error getting Status update for Medical Test: " + e.getMessage() + medicalTestDto.toString() );
@@ -141,7 +145,7 @@ public class MedicalTestServiceImpl implements MedicalTestService {
             }
             else{
                 //if the test is valid change the order status and save the order number
-                medicalTest.setTestStatus(MedicalTestOrderStatusEnum.ORDER_PLACED);
+                medicalTest.setTestOrderStatusEnum(MedicalTestOrderStatusEnum.ORDER_PLACED);
                 medicalTest.setOrderNumber(Long.parseLong(result[3]));
                 medicalTestRepository.save(medicalTest);
             }
@@ -167,7 +171,7 @@ public class MedicalTestServiceImpl implements MedicalTestService {
     public MedicalTest generateRandomMedicalTest() {
 
         MedicalTest medicalTest = medicalTestList.get(new Random().nextInt(medicalTestList.size()));
-        medicalTest.setTestStatus(MedicalTestOrderStatusEnum.NOT_SUBMITTED);
+        medicalTest.setTestOrderStatusEnum(MedicalTestOrderStatusEnum.NOT_SUBMITTED);
         medicalTest.setMedicalTestResultEnum(MedicalTestResultEnum.WAITING_FOR_RESULT);
         return medicalTest;
 
