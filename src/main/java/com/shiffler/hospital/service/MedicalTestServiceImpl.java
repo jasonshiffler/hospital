@@ -1,3 +1,7 @@
+/*
+This class is the layer to access management of Medical Test Data.
+ */
+
 package com.shiffler.hospital.service;
 
 import com.shiffler.hospital.dto.MedicalTestDto;
@@ -43,8 +47,13 @@ public class MedicalTestServiceImpl implements MedicalTestService {
     //The Path of the API to access
     private final String MEDICAL_TEST_PATH ="/api/v1/medicaltestorder";
 
+    //This is used to retrieve information on the Medical Test
     private final RestTemplate restTemplate;
+
+    //Allows us to map between the DTO and the Entity
     private final MedicalTestMapper medicalTestMapper;
+
+    //Allows access to the database with all of the tests.
     private final MedicalTestRepository medicalTestRepository;
 
     @Autowired
@@ -80,10 +89,17 @@ public class MedicalTestServiceImpl implements MedicalTestService {
     public void updateStatusForPendingTests(){
         log.info("Updating Test Status for Pending Tests");
 
+        //Grab the pending medical tests from the DB
         List <MedicalTest> medicalTestList = medicalTestRepository
-                .findByMedicalTestOrderStatus(MedicalTestOrderStatusEnum.ORDER_PLACED);
+                .findByMedicalTestMultipleStatus(MedicalTestOrderStatusEnum.ORDER_PLACED,
+                        MedicalTestOrderStatusEnum.ORDER_PLACED_ONHOLD,
+                        MedicalTestOrderStatusEnum.TEST_IN_PROCESS);
 
-        medicalTestList.stream().parallel().forEach(s -> getMedicalTestStatusFromTestCenter(s));
+
+        //Ask the Medical Center for status updates on each test
+        medicalTestList.stream().forEach(s -> getMedicalTestStatusFromTestCenter(s));
+
+        log.info("Test Status Updates Complete");
     }
 
     /**
@@ -92,7 +108,10 @@ public class MedicalTestServiceImpl implements MedicalTestService {
      */
     public void getMedicalTestStatusFromTestCenter(MedicalTest medicalTest) {
 
+        boolean updateEntity = false; //Track the need to update the entity in the database
+        log.info("#############################################");
         log.info("Retrieving test status for test: {}", medicalTest);
+
 
         MedicalTestDto medicalTestDto = new MedicalTestDto();
 
@@ -106,19 +125,35 @@ public class MedicalTestServiceImpl implements MedicalTestService {
                             + medicalTest.getOrderNumber()
                             , MedicalTestDto.class);
 
+            //Update the order status of the medical test if it has changed and isn't null
             if (medicalTest.getTestOrderStatusEnum() != medicalTestDto.getTestOrderStatusEnum()
                     && (medicalTestDto.getTestOrderStatusEnum() != null)) {
                 medicalTest.setTestOrderStatusEnum(medicalTestDto.getTestOrderStatusEnum());
+                log.info("Medical Test order status updated to {} ", medicalTest.getTestOrderStatusEnum());
+                updateEntity= true;
             }
 
-            log.info(medicalTestDto.toString());
+            //Update the result status of the medical test if it has changed and isn't null
+
+            if (medicalTest.getMedicalTestResultEnum() != medicalTestDto.getMedicalTestResultEnum()
+                    && (medicalTestDto.getMedicalTestResultEnum() != null)) {
+                medicalTest.setMedicalTestResultEnum(medicalTestDto.getMedicalTestResultEnum());
+                log.info("Medical Test result status updated to {} ", medicalTest.getMedicalTestResultEnum());
+                updateEntity= true;
+            }
+
+            if (updateEntity == true){
+                log.info("Updating status of medical test saved");
+                medicalTestRepository.save(medicalTest);
+            } else if(updateEntity == false){
+                log.info("No updates for medical test");
+            }
+            log.info("#############################################");
 
         }catch (Exception e){
             log.error("Error getting Status update for Medical Test: " + e.getMessage() + medicalTestDto.toString() );
         }
-
-    }
-
+    } //close method
 
     /**
      * Orders a medical test from the Medical Test provider
@@ -228,6 +263,5 @@ public class MedicalTestServiceImpl implements MedicalTestService {
 
         }
     } //close method
-
 
 } //close class

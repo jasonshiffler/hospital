@@ -1,3 +1,7 @@
+/*
+ Contains functionality for interacting with patient data
+ */
+
 package com.shiffler.hospital.service;
 
 import com.shiffler.hospital.entity.MedicalTest;

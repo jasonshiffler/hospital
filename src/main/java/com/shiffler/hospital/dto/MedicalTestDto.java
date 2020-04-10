@@ -1,3 +1,8 @@
+/*
+This DTO object presents only the fields that are needed for a particular MedicalTest as there is some
+internal information that doesn't need to be exposed.
+ */
+
 package com.shiffler.hospital.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
