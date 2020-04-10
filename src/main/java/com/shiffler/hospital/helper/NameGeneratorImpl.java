@@ -5,6 +5,7 @@ This class is used to generate random names based on lists of names contained in
 package com.shiffler.hospital.helper;
 
 import com.shiffler.hospital.helper.NameGenerator;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.Random;
 
 @Component
 @Slf4j
+@Getter
 public class NameGeneratorImpl implements NameGenerator {
 
    private List<String> maleFirstNameList = new ArrayList<>();
