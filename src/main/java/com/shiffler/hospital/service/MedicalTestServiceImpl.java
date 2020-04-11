@@ -66,7 +66,6 @@ public class MedicalTestServiceImpl implements MedicalTestService {
         this.medicalTestRepository = medicalTestRepository;
     }
 
-
     /**
      * Look through the Medical Test Repository for all tests that have a test status of NOT_SUBMITTED and place an order for them.
      *
@@ -200,7 +199,6 @@ public class MedicalTestServiceImpl implements MedicalTestService {
 
     /**
      * Creates a random Medical test
-     *
      * @return
      */
     public MedicalTest generateRandomMedicalTest() {
@@ -260,7 +258,6 @@ public class MedicalTestServiceImpl implements MedicalTestService {
                             .testName(testName)
                             .build()
             );
-
         }
     } //close method
 

@@ -19,6 +19,7 @@ class RandomDateGeneratorImplTest {
 
     /**
      * Runs a test on the date generator. Creates many dates to run the test since we are dealing with randomized data
+     * Verifies that all of the dates fall within a certain timeframe.
      */
     @Test
     public void generateDateBetween() {

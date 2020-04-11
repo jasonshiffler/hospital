@@ -1,6 +1,6 @@
 /*
- Contains functionality for interacting with patient data
- */
+Contains functionality for interacting with patient data
+*/
 
 package com.shiffler.hospital.service;
 
@@ -72,7 +72,6 @@ public class PatientServiceImpl implements PatientService {
         List<MedicalTest> test = patient.getMedicalTests();
         test.add(medicalTest);
         patientRepository.save(patient);
-
     }
 
     /**
@@ -86,7 +85,6 @@ public class PatientServiceImpl implements PatientService {
 
     /**
      * Takes a  patients and randomly determines for each one if they need a medical test.
-     *
      * @param patient - The patient that will be checked to see if a medical test is necessary
      */
     @Override
@@ -107,6 +105,8 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public Patient generateRandomPatient() {
 
+        //If its true generate a female patient otherwise generate a male
+
         if (new Random().nextBoolean()) {
 
             return Patient.builder().firstName(nameGenerator.generateFemaleFirstName())
@@ -122,5 +122,4 @@ public class PatientServiceImpl implements PatientService {
                     .build();
         }
     } //close method
-
 }
