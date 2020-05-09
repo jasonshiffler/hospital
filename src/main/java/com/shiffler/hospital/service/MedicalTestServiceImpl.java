@@ -45,7 +45,7 @@ public class MedicalTestServiceImpl implements MedicalTestService {
     private List<MedicalTest> medicalTestList = new ArrayList<>();
 
     //The Path of the API to access
-    private final String MEDICAL_TEST_PATH ="/api/v1/medicaltestorder";
+    private final String MEDICAL_TEST_PATH ="/api/v1/medicaltestorders";
 
     //This is used to retrieve information on the Medical Test
     private final RestTemplate restTemplate;
@@ -170,17 +170,17 @@ public class MedicalTestServiceImpl implements MedicalTestService {
             String url  = uri.toString();
             log.info("Location recieved for Medical Test Order {} " , url.toString());
 
-            //The result looks like http://localhost:8081/100000298 . We want to split off the just the id and save it.
+            //The result looks like http://localhost:8081//api/v1/medicaltestorders/100000298 . We want to split off the just the id and save it.
             result = url.toString().split("/");
 
             //check to make sure the id is valid
-            if (result[3] == null ||result[3].length() != 9 || (NumberUtils.isParsable(result[3]) == false)){
-                log.error("Location received for Medical Test {} + is invalid",medicalTestDto.toString());
+            if (result[6] == null ||result[6].length() != 9 || (NumberUtils.isParsable(result[6]) == false)){
+                log.error(" Invalid location received for Medical Test {} ",medicalTestDto.toString());
             }
             else{
                 //if the test is valid change the order status and save the order number
                 medicalTest.setTestOrderStatusEnum(MedicalTestOrderStatusEnum.ORDER_PLACED);
-                medicalTest.setOrderNumber(Long.parseLong(result[3]));
+                medicalTest.setOrderNumber(Long.parseLong(result[6]));
                 medicalTestRepository.save(medicalTest);
             }
 
