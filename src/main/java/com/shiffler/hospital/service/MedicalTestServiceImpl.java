@@ -41,6 +41,12 @@ public class MedicalTestServiceImpl implements MedicalTestService {
     @Value("${medtests.srcfile}")
     private String testSource;
 
+    @Value("${testingcenter.uname}")
+    private String username;
+
+    @Value("${testingcenter.pword}")
+    private String password;
+
     //holds the list of possible Medical Tests
     private List<MedicalTest> medicalTestList = new ArrayList<>();
 
@@ -48,7 +54,10 @@ public class MedicalTestServiceImpl implements MedicalTestService {
     private final String MEDICAL_TEST_PATH ="/api/v1/medicaltestorders";
 
     //This is used to retrieve information on the Medical Test
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+
+    //We'll use this to build the REST template
+    private final RestTemplateBuilder restTemplateBuilder;
 
     //Allows us to map between the DTO and the Entity
     private final MedicalTestMapper medicalTestMapper;
@@ -56,15 +65,19 @@ public class MedicalTestServiceImpl implements MedicalTestService {
     //Allows access to the database with all of the tests.
     private final MedicalTestRepository medicalTestRepository;
 
+
+
     @Autowired
     public MedicalTestServiceImpl(RestTemplateBuilder restTemplateBuilder,
                                   MedicalTestMapper medicalTestMapper,
                                   MedicalTestRepository medicalTestRepository) {
 
-        this.restTemplate = restTemplateBuilder.build();
+
+        this.restTemplateBuilder = restTemplateBuilder;
         this.medicalTestMapper = medicalTestMapper;
         this.medicalTestRepository = medicalTestRepository;
     }
+
 
     /**
      * Look through the Medical Test Repository for all tests that have a test status of NOT_SUBMITTED and place an order for them.
@@ -217,6 +230,11 @@ public class MedicalTestServiceImpl implements MedicalTestService {
      */
     @PostConstruct
     public void init() throws IOException {
+
+        //This has to be done after the constructor since anything with @Value(our username and password) is
+        //done after the constructor if finished.
+
+        restTemplate = restTemplateBuilder.basicAuthentication(username,password).build();
 
         log.info("*** Generating Medical Tests ***");
 
